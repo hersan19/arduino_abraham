@@ -25,10 +25,11 @@ int paso [4][4] =         // matriz (array bidimensional) con la secuencia de pa
   {0, 0, 1, 1},
   {1, 0, 0, 1}
 };               //1,2, 3, 4,5                     
-int tiempos [4] = {2,5,10,15} // 4posiciones = tiempos
-long randNumber;
+int tiempos [4] = {2,5,10,15}; // 4posiciones = tiempos
+int randNumber;
 const int pinecho = 2;
 const int pintrigger = 3;
+
 
                                          
 
@@ -53,21 +54,23 @@ void setup()
 
 void loop() {                                       // put your main code here, to run repeatedly:
                                                       //servoMotor.attach(4);  >>integra 1<<
-  intdex_tiempo = random(1,5);
-  randNumber = tiempos[index_tiempo] * 1000
+  int dex_tiempo = random(1,5);
+  randNumber = tiempos[dex_tiempo] * 1000;
   //Serial.println(randNumber);
   //if(digitalRead(PULSADOR) == LOW)
   //if(randNumber == 2)
   //{                   //integra
     long int t1 = millis();
-    digitalWrite(BUZZER_ACTIVO, HIGH);              //integra
+    digitalWrite(BUZZER_ACTIVO, HIGH);              //integra    
+    mover_motor(); 
+    digitalWrite(BUZZER_ACTIVO, LOW);               //integre
     delay (randNumber);                                    //integra <<<<<<<DURACION DEL ZUMBIDO>>>>>
-    mover_motor();      
+         
     long int t2 = millis();
     Serial.print("Time taken by the task_1: "); Serial.print(t2-t1); Serial.println(" milliseconds");
     //delay (randNumber-2200);                                    //integra <<<<<<<DURACION DEL ZUMBIDO>>>>>
     long int t3 = millis();
-    digitalWrite(BUZZER_ACTIVO, LOW);               //integre
+    
     delay (randNumber+1283);   
     long int t4 = millis();
     Serial.print("Time taken by the task_2: "); Serial.print(t4-t3); Serial.println(" milliseconds");
@@ -114,4 +117,3 @@ void mover_motor(){
           //Serial.print("Time taken by the task_motor: "); Serial.print(t2-t1); Serial.println(" milliseconds");
           //delay (1000);  
 }
-
