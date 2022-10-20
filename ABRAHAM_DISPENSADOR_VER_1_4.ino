@@ -63,7 +63,7 @@ void loop() {                                       // put your main code here, 
       // read the incoming byte:
       incomingByte = Serial.read();
       delay(100);
-      if(incomingByte == 49)
+      if(incomingByte == 49) // se pregunta si "incomingByte" = 1 ASCII = 49 
       {
         mover_motor();
       }
@@ -98,3 +98,5 @@ void mover_motor(){
   //Serial.print("Time taken by the task_motor: "); Serial.print(t2-t1); Serial.println(" milliseconds");
   //delay (1000);  
 }
+
+
