@@ -28,7 +28,6 @@ int paso [4][4] =         // matriz (array bidimensional) con la secuencia de pa
 
 const int pinecho = 2;
 const int pintrigger = 3;
-int incomingByte = 0; // for incoming serial data
 
                                          
 
@@ -59,7 +58,27 @@ if (Serial.available() > 0) {
       delay(100);
       if(incomingByte == 49) // se pregunta si "incomingByte" = 1 ASCII = 49 
       {
-        mover_motor();
+        digitalWrite(BUZZER_ACTIVO, HIGH);              //integra   
+        delay(1000); 
+        digitalWrite(BUZZER_ACTIVO, LOW);
+        digitalWrite(pintrigger, LOW);
+        delayMicroseconds(2);
+        digitalWrite(pintrigger, HIGH);
+        delayMicroseconds(10);
+        digitalWrite(pintrigger, LOW);
+        tiempo = pulseIn(pinecho, HIGH);
+
+        distancia = tiempo / 46;                             // DICE 58 CALIBRA DISTANCIA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
+
+        Serial.print(distancia);
+        Serial.println(" cm");
+        delay(200);                       // DECIA 200                                             
+
+        if (distancia <=40 && distancia >= 3 && leerSensor)
+        {
+          mover_motor_sin_sonido();
+        }
+        
       }
       // say what you got:
       Serial.print("I received: ");
@@ -127,6 +146,29 @@ void mover_motor(){
   digitalWrite(BUZZER_ACTIVO, HIGH);              //integra   
   delay(1000); 
   digitalWrite(BUZZER_ACTIVO, LOW);
+  long int t1 = millis();
+  for (int i = 0; i < 32; i++)                          // DICE 512*4 = 2048 pasos <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    {
+      for (int i = 0; i < 4; i++)                       // DICE 4 bucle recupera la matriz de a una fila por vez
+      {                                                 // para obtener los valores logicos a aplicar
+        digitalWrite(IN1, paso[i][0]);                  // a IN1, IN2, IN3 y IN4
+        digitalWrite(IN2, paso[i][1]);
+        digitalWrite(IN3, paso[i][2]);
+        digitalWrite(IN4, paso[i][3]);
+        delay (demora);
+      }
+    }
+  digitalWrite (IN1, LOW);          // desenergiza las bobina con un 0 logico osea apagado.
+  digitalWrite (IN2, LOW);
+  digitalWrite (IN3, LOW);
+  digitalWrite (IN4, LOW);
+  long int t2 = millis();
+  //Serial.print("Time taken by the task_motor: "); Serial.print(t2-t1); Serial.println(" milliseconds");
+  //delay (1000);  
+}
+
+void mover_motor_sin_sonido(){
+
   long int t1 = millis();
   for (int i = 0; i < 32; i++)                          // DICE 512*4 = 2048 pasos <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     {
