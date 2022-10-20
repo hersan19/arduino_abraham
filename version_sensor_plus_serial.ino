@@ -28,7 +28,7 @@ int paso [4][4] =         // matriz (array bidimensional) con la secuencia de pa
 
 const int pinecho = 2;
 const int pintrigger = 3;
-
+int incomingByte = 0; // for incoming serial data
                                          
 
 unsigned int tiempo, distancia;
